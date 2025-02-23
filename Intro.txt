@@ -1,28 +1,107 @@
-Rest Assured - API Testing
+Step 2: Writing Your First API Test
+Here’s how we can write a test to verify the response:
 
-1. Environmant Setup /HTTP Methods
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
 
-2 Creating POST Request Payloads in multiple ways
+public class APITest {
 
-3 Cookies & Headers
-  Query & Path Parameters
-  Logging
+    @Test
+    public void testGetRequest() {
+        RestAssured.baseURI = "https://jsonplaceholder.typicode.com";
 
-4 Parsing Response Body
-  JSON Object
+        given()
+            .when()
+            .get("/posts/1")
+            .then()
+            .statusCode(200) // Verify status code
+            .body("id", equalTo(1)) // Check that id matches
+            .body("title", notNullValue()); // Ensure title is not null
+    }
+}
+This test performs a GET request and validates the response:
 
-5.Parsing XML Response Body
-  File Upload and Download API
+Checks if the status code is 200.
+Confirms that the id field in the JSON response is 1.
+Ensures that the title field is present in the response.
+Step 3: Adding Assertions
+Assertions are a critical part of API testing to validate different aspects
 
-6.JSON & XML Schema Validation
-  Serialization and DeSerialization
-  
+of the response. Rest Assured provides a variety of built-in matchers (such
 
-7.Types of Authorization
-  Faker Library
+as equalTo,hasSize, notNullValue, etc.) to check specific elements in the 
 
-8.API Chaining
+response body, headers, and status codes.
 
+For example, let’s validate that a POST request successfully creates a new 
+
+record:
+
+@Test
+public void testPostRequest() {
+    RestAssured.baseURI = "https://jsonplaceholder.typicode.com";
+
+    String requestBody = "{ \"title\": \"foo\", \"body\": \"bar\", 
+
+\"userId\": 1 }";
+
+    given()
+        .header("Content-type", "application/json")
+        .and()
+        .body(requestBody)
+        .when()
+        .post("/posts")
+        .then()
+        .statusCode(201) // Expected HTTP Status code for creation
+        .body("title", equalTo("foo"))
+        .body("body", equalTo("bar"))
+        .body("userId", equalTo(1));
+}
+
+
+In this example, we send a JSON payload in the request body and check that:
+
+The status code is 201, indicating successful creation.
+The title, body, and userId fields in the response match our request
+payload.
+Step 4: Working with Different HTTP Methods
+Beyond GET and POST requests, Rest Assured also supports other HTTP methods 
+
+such as PUT, PATCH, and DELETE, allowing full CRUD (Create, Read, Update,
+
+Delete) operations.
+
+For instance, here’s how we might perform a DELETE request to remove an 
+
+item:
+
+@Test
+public void testDeleteRequest() {
+    RestAssured.baseURI = "https://jsonplaceholder.typicode.com";
+
+    given()
+        .when()
+        .delete("/posts/1")
+        .then()
+        .statusCode(200); // Expecting 200 OK for successful deletion
+}
+
+Advanced Concepts
+Once you’ve mastered the basics, Rest Assured offers additional features to 
+
+enhance 
+
+your API testing:
+
+Parameterization: Use query parameters and path parameters to make tests
+dynamic.
+Authentication: Support for different authentication schemes (Basic, OAuth,  
+etc.).
+Logging: Log requests and responses to debug failed tests easily.
+Custom Headers: Add custom headers and cookies to test various request 
+configurations.
 
 
 
