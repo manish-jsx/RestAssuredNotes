@@ -10,9 +10,19 @@ DELETE :
 
 BDD (Behavioural Driven Development Approach)
 
+
+
 give() : ContentType , setCookies, add Auth, add param, set headers info etc
 when() : HTTP Methods get, post , put, delete
 then() : validate status code, extract response, extract headers cookies & response body..
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+
+
+
 
 public class HTTPRequests {
  int id;
