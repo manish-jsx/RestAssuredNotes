@@ -1,0 +1,78 @@
+GET :
+
+POST :
+
+PUT :
+
+PATCH :
+
+DELETE :
+
+BDD (Behavioural Driven Development Approach)
+
+give() : ContentType , setCookies, add Auth, add param, set headers info etc
+when() : HTTP Methods get, post , put, delete
+then() : validate status code, extract response, extract headers cookies & response body..
+
+public class HTTPRequests {
+ int id;
+@Test(Priority=1)
+void getUser(){
+     given()
+     .when()
+           .get("https://reqres.in/api/users?page=2")
+     .then()
+           .statusCode(200)
+           .body("page".equalsTo(2)
+           .log().all();
+}
+
+@Test(Priority=2)
+void createUser(){
+
+      Hashmap data = new hashMap();
+      data.put("name","manish");
+      data.put("job","trainer");
+      
+      id =given()
+            .contentType("application/json)
+            .body(data)
+     .when()
+             .post("https://reqres.in/api/user")
+             .jsonPath().getInt("id");
+     .then()
+           .statusCode(201)
+           .log().all();
+
+}
+@Test(Priority=3 dependsOnMethods ={createUser})
+void updateUser(){
+
+      Hashmap data = new hashMap();
+      data.put("name","manish");
+      data.put("job","trainer");
+
+     given()
+            .contentType("application/json")
+            .body(data)
+     .when()
+            .put(""+id)
+
+     .then()
+            .statusCode(201)
+           .log().all();
+
+}
+@Test(Priority=4)
+void deleteUser(){
+     given()
+     .when()
+           .delete("http://reqres/api/user"+id)
+     .then()
+           .statusCode(204)
+           .log().all();
+
+}
+
+}
+
