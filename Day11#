@@ -1,0 +1,97 @@
+package com.api.testing.rest.assured;
+
+import org.testng.annotations.Test;
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+
+import java.util.HashMap;
+
+
+
+public class Day1 {
+	
+	int id;
+    @Test
+    public void getUser() {
+        given()
+        .when()
+            .get("https://reqres.in/api/users?page=2")
+        .then()
+            .statusCode(200)  
+            .body("page", equalTo(2)) 
+        	.log().all();      
+        }
+    
+    
+    @Test
+    public void createUser() {
+    	
+//    	data: {
+//    	    "name": "morpheus",
+//    	    "job": "leader"
+//    	}
+
+    	        HashMap data =new HashMap();
+    			data.put("name", "majghiufewg");
+    			data.put("job", "teacher");
+    	
+    	
+        given()
+              .contentType("application/json")
+              .body(data)
+        
+        .when()
+            .post("https://reqres.in/api/users")
+            .jsonPath().getInt("id");
+            
+        .then()
+            .statusCode(201)  
+        	.log().all();      
+        }
+    
+	
+	
+
+}
+---------------------
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.api.testing</groupId>
+  <artifactId>rest.assured</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>rest.assured</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+<!-- Rest Assured -->
+    <dependency>
+        <groupId>io.rest-assured</groupId>
+        <artifactId>rest-assured</artifactId>
+        <version>5.4.0</version>
+    </dependency>
+
+    <!-- TestNG -->
+    <dependency>
+        <groupId>org.testng</groupId>
+        <artifactId>testng</artifactId>
+        <version>7.7.1</version>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- JSON Parsing -->
+    <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.15.2</version>
+    </dependency>
+
+  </dependencies>
+</project>
